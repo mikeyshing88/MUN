@@ -7,9 +7,11 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
+// MAIN JS
+
 import React, { Component, PropTypes } from 'react';
 import emptyFunction from 'fbjs/lib/emptyFunction';
-import s from './App.scss';
+import s from '../../styles/App/App.scss';
 import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
