@@ -76,24 +76,6 @@ const config = {
         },
       },
       {
-        test: /\.css/,
-        loaders: DEBUG ? [
-          'isomorphic-style-loader',
-          `css-loader?${JSON.stringify({
-          sourceMap: DEBUG,
-          modules: true,
-          localIdentName: DEBUG ? '[name]_[local]_[hash:base64:3]' : '[hash:base64:4]',
-          minimize: !DEBUG,
-          })}`,
-          'postcss-loader?pack=default',
-        ] : [],
-        loader: !DEBUG ? ExtractTextPlugin.extract(
-          'style-loader?localIdentName=localIdentName=[hash:base64:4]',
-          'css-loader?module',
-          'postcss-loader?pack=default'
-        ) : ''
-      },
-      {
         test: /\.scss$/,
         loaders: DEBUG ? [
           'isomorphic-style-loader',
