@@ -20,7 +20,9 @@ const NewsItemType = new ObjectType({
     link: { type: new NonNull(StringType) },
     author: { type: StringType },
     publishedDate: { type: new NonNull(StringType) },
-    contentSnippet: { type: StringType },
+    favoriteFruit: { type: StringType },
+    guid: { type: new NonNull(StringType) },
+
   },
 });
 
