@@ -76,27 +76,37 @@ const config = {
         },
       },
       {
-             test: /\.css/,
-             loaders: DEBUG ? [
-               'isomorphic-style-loader',
-               `css-loader?${JSON.stringify({
-                 sourceMap: DEBUG,
-                 modules: true,
-                 localIdentName: DEBUG ? '[name]_[local]_[hash:base64:3]' : '[hash:base64:4]',
-                 minimize: !DEBUG,
-               })}`,
-               'postcss-loader?pack=default',
-             ] : [],
-             loader: !DEBUG ? ExtractTextPlugin.extract('style-loader?localIdentName=localIdentName=[hash:base64:4]', 'css-loader?module', 'postcss-loader?pack=default') : ''
-           },
+        test: /\.css/,
+        loaders: DEBUG ? [
+          'isomorphic-style-loader',
+          `css-loader?${JSON.stringify({
+          sourceMap: DEBUG,
+          modules: true,
+          localIdentName: DEBUG ? '[name]_[local]_[hash:base64:3]' : '[hash:base64:4]',
+          minimize: !DEBUG,
+          })}`,
+          'postcss-loader?pack=default',
+        ] : [],
+        loader: !DEBUG ? ExtractTextPlugin.extract(
+          'style-loader?localIdentName=localIdentName=[hash:base64:4]',
+          'css-loader?module',
+          'postcss-loader?pack=default'
+        ) : ''
+      },
       {
         test: /\.scss$/,
-        loaders: [
+        loaders: DEBUG ? [
           'isomorphic-style-loader',
           `css-loader?${JSON.stringify({ sourceMap: DEBUG, minimize: !DEBUG })}`,
           'postcss-loader?pack=sass',
           'sass-loader',
-        ],
+        ] : [],
+        loader: !DEBUG ? ExtractTextPlugin.extract(
+          'style-loader?localIdentName=localIdentName=[hash:base64:4]',
+          'css-loader?module',
+          'postcss-loader?pack=sass',
+          'sass-loader'
+        ) : ''
       },
       {
         test: /\.json$/,
@@ -234,7 +244,7 @@ const clientConfig = extend(true, {}, config, {
     new webpack.optimize.OccurrenceOrderPlugin(true),
 
     ...DEBUG ? [] : [
-new ExtractTextPlugin('style.css'),
+      new ExtractTextPlugin('style.css'),
       // Search for equal or similar files and deduplicate them in the output
       // https://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
       new webpack.optimize.DedupePlugin(),
@@ -290,7 +300,7 @@ const serverConfig = extend(true, {}, config, {
     // https://webpack.github.io/docs/list-of-plugins.html#defineplugin
     new webpack.DefinePlugin({ ...GLOBALS, 'process.env.BROWSER': false }),
     ...(DEBUG ? [] : [
-new ExtractTextPlugin('style.css')
+      new ExtractTextPlugin('style.css')
     ]),
     // Adds a banner to the top of each generated chunk
     // https://webpack.github.io/docs/list-of-plugins.html#bannerplugin
